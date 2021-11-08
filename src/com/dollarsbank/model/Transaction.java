@@ -7,13 +7,13 @@ public class Transaction {
 	public enum Type {WITHDRAWL, DEPOSIT, INITIAL_DEPOSIT}
 	private LocalDateTime time;
 	private double starting;
-	private double finishing;
+	private double amount;
 	private Type transactionType;
-	public Transaction(LocalDateTime time, double starting, double finishing, Type transactionType) {
+	public Transaction(LocalDateTime time, double starting, double amount, Type transactionType) {
 		super();
 		this.time = time;
 		this.starting = starting;
-		this.finishing = finishing;
+		this.amount = amount;
 		this.transactionType = transactionType;
 	}
 	public LocalDateTime getTime() {
@@ -28,11 +28,11 @@ public class Transaction {
 	public void setStarting(double starting) {
 		this.starting = starting;
 	}
-	public double getFinishing() {
-		return finishing;
+	public double getamount() {
+		return amount;
 	}
-	public void setFinishing(double finishing) {
-		this.finishing = finishing;
+	public void setamount(double amount) {
+		this.amount = amount;
 	}
 	public Type getTransactionType() {
 		return transactionType;
