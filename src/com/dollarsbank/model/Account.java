@@ -31,6 +31,10 @@ public class Account {
 		if(recentActions.size()>5)
 			recentActions.remove();
 	}
+	@Override
+	public String toString() {
+		return "Account:\nBalance=" + balance;
+	}
 	
 	
 }
