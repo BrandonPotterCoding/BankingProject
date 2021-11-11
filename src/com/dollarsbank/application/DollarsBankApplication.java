@@ -1,6 +1,7 @@
 package com.dollarsbank.application;
 
 import java.util.ArrayList;
+import com.dollarsbank.utility.ColorsUtility;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -68,18 +69,18 @@ public class DollarsBankApplication {
 	}
 
 	private static void listOriginalOptions() {
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|       Welcome to Dollars Bank      |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
 		System.out.println("1. Create New Account");
 		System.out.println("2. Login");
 		System.out.println("3. Exit.");
 	}
 
 	private static void listLoggedInOptions() {
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|          Welcome Cusomter          |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
 		System.out.println("1. Deposit Amount");
 		System.out.println("2. Withdraw Amount");
 		System.out.println("3. Funds Transfer");

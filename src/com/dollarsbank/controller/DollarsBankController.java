@@ -9,7 +9,9 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.dollarsbank.exception.NegativeValueException;
 import com.dollarsbank.exception.OverdraftException;
+import com.dollarsbank.utility.ColorsUtility;
 import com.dollarsbank.model.Account;
 import com.dollarsbank.model.Customer;
 import com.dollarsbank.model.Transaction;
@@ -20,31 +22,31 @@ public class DollarsBankController {
 	public Customer createNewCustomer(HashMap<String, String> userLoginInfo) {
 		Scanner scan = new Scanner(System.in);
 		Customer creating;
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|    Enter Details for New Account   |");
-		System.out.println("+------------------------------------+");
-		System.out.println("Customer Name:");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
+		System.out.println("Customer Name:"+ColorsUtility.CYAN);
 		String name = scan.nextLine();
-		System.out.println("Customer Address:");
+		System.out.println(ColorsUtility.RESET+"Customer Address:"+ColorsUtility.CYAN);
 		String address = scan.nextLine();
-		System.out.println("Contact Number:");
+		System.out.println(ColorsUtility.RESET+"Contact Number:"+ColorsUtility.CYAN);
 		String number = scan.nextLine();
-		System.out.println("User Id:");
+		System.out.println(ColorsUtility.RESET+"User Id:"+ColorsUtility.CYAN);
 		String userID = scan.nextLine();
 		while (userLoginInfo.containsKey(userID)) {
-			System.out.println("User Id already in use select another:");
+			System.out.println(ColorsUtility.RESET+"User Id already in use select another:"+ColorsUtility.CYAN);
 			userID = scan.nextLine();
 		}
-		System.out.println("Password:");
+		System.out.println(ColorsUtility.RESET+"Password:"+ColorsUtility.CYAN);
 		String password = getValidPassword(scan);
-		System.out.println("Initial Deposit:");
-		double initial = scan.nextDouble();
+		System.out.println(ColorsUtility.RESET+"Initial Deposit:"+ColorsUtility.CYAN);
+		double initial = getDouble(scan);
 		Account newAcc = new Account();
 		creating = new Customer(name, address, number, userID, password, newAcc);
 		Transaction first = new Transaction(LocalDateTime.now(), creating.getAccount().getBalance(), initial,
 				Type.INITIAL_DEPOSIT);
 		handleTransaction(creating, first);
-		System.out.println(name+" successfully created an account");
+		System.out.println(ColorsUtility.GREEN+name+" successfully created an account");
 		return creating;
 	}
 
@@ -52,20 +54,20 @@ public class DollarsBankController {
 		boolean credentials = false;
 		String username = null;
 		Scanner scan = new Scanner(System.in);
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|         Enter Login Details        |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
 		while (!credentials) {
-			System.out.println("Enter in Username:");
+			System.out.println(ColorsUtility.RESET+"Enter in Username:"+ColorsUtility.CYAN);
 			username = scan.nextLine();
-			System.out.println("Enter in Password:");
+			System.out.println(ColorsUtility.RESET+"Enter in Password:"+ColorsUtility.CYAN);
 			String password = scan.nextLine();
 			if (userLoginInfo.containsKey(username)) {
 				if (userLoginInfo.get(username).equals(password))
 					credentials = true;
 			}
 			if (!credentials)
-				System.out.println("Invalid Credentials. Try again.");
+				System.out.println(ColorsUtility.RED+"Invalid Credentials. Try again."+ColorsUtility.CYAN);
 		}
 		for (Customer customer : customers) {
 			if (customer.getLogin().equals(username)) {
@@ -79,9 +81,9 @@ public class DollarsBankController {
 	public void makeDeposit(Customer customer) {
 		Transaction deposit = new Transaction(LocalDateTime.now(), customer.getAccount().getBalance(), Type.DEPOSIT);
 		Scanner scan = new Scanner(System.in);
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|    Enter Details for New Deposit   |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.CYAN);
 		double amount = getValidDouble(scan, 0, deposit.getTransactionType());
 		deposit.setamount(amount);
 		handleTransaction(customer, deposit);
@@ -92,9 +94,9 @@ public class DollarsBankController {
 		Transaction withdrawl = new Transaction(LocalDateTime.now(), customer.getAccount().getBalance(),
 				Type.WITHDRAWL);
 		Scanner scan = new Scanner(System.in);
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|  Enter Details for New Withdrawl   |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.CYAN);
 		double amount = getValidDouble(scan, customer.getAccount().getBalance(), Type.WITHDRAWL);
 		withdrawl.setamount(amount);
 		handleTransaction(customer, withdrawl);
@@ -107,13 +109,13 @@ public class DollarsBankController {
 		Transaction transferOut = new Transaction(LocalDateTime.now(), sender.getAccount().getBalance(),
 				Type.TRANSFEROUT);
 		Scanner scan = new Scanner(System.in);
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|   Enter Details for New Transfer   |");
-		System.out.println("+------------------------------------+");
-		System.out.println("Enter User ID money is being transfered to:");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
+		System.out.println("Enter User ID money is being transfered to:"+ColorsUtility.CYAN);
 		String userID = scan.nextLine();
 		while (!userLoginInfo.containsKey(userID)) {
-			System.out.println("User Id does not exist try again:");
+			System.out.println(ColorsUtility.RED+"User Id does not exist try again:"+ColorsUtility.CYAN);
 			userID = scan.nextLine();
 		}
 		for (Customer customer : customerList) {
@@ -133,22 +135,22 @@ public class DollarsBankController {
 
 	public void displayRecentTransactions(Customer customer) {
 		Transaction t;
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|        5 Recent Transaction        |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
 		Queue<Transaction> transactions = customer.getAccount().getRecentActions();
 		for (int i = 0; i < transactions.size(); i++) {
 			t = transactions.remove();
 			transactions.add(t);
 			System.out.println(t);
-			System.out.println("-------------------------------------");
+			System.out.println(ColorsUtility.BLUE+"-------------------------------------"+ColorsUtility.RESET);
 		}
 	}
 
 	public void displayCusomterInformation(Customer customer) {
-		System.out.println("+------------------------------------+");
+		System.out.println(ColorsUtility.BLUE+"+------------------------------------+");
 		System.out.println("|        Customer Information        |");
-		System.out.println("+------------------------------------+");
+		System.out.println("+------------------------------------+"+ColorsUtility.RESET);
 		System.out.println(customer);
 	}
 
@@ -168,10 +170,10 @@ public class DollarsBankController {
 		}
 		a.addRecentAction(action);
 	}
-
-	public void promptAmount(String transactionType) {
-		System.out.println("Please enter in the amount that you would like to " + transactionType + ": ");
-	}
+//
+//	public void promptAmount(String transactionType) {
+//		System.out.println("Please enter in the amount that you would like to " + transactionType + ": ");
+//	}
 
 	public double getValidDouble(Scanner scan, double highEnd, Type transactionType) {
 		boolean cond = true;
@@ -190,39 +192,58 @@ public class DollarsBankController {
 		default:
 			verb = "failed";
 		}
-		System.out.println("Enter in the amount you are " + verb + ": ");
+		System.out.println(ColorsUtility.RESET+"Enter in the amount you are " + verb + ": "+ColorsUtility.CYAN);
 		while (cond) {
 			try {
-				amount = scan.nextDouble();
+				amount = getDouble(scan);
 				if (transactionType.equals(Type.WITHDRAWL) || transactionType.equals(Type.TRANSFEROUT)) {
 					if (amount > highEnd)
 						throw new OverdraftException(highEnd);
 				}
 				cond = false;
 			} catch (InputMismatchException e) {
-				System.out.println("Please Enter a Valid input!");
+				System.out.println(ColorsUtility.RED+"Please Enter a Valid input!"+ColorsUtility.CYAN);
 				scan.next();
 			} catch (OverdraftException e) {
-				System.out.println(e.getMessage());
+				System.out.println(ColorsUtility.RED+e.getMessage()+ColorsUtility.CYAN);
+				System.out.println(ColorsUtility.RESET+"Enter in the amount you are " + verb + ": "+ColorsUtility.CYAN);
 			}
 		}
 		return amount;
 
 	}
 
+	private double getDouble(Scanner scan) {
+		boolean cond = true;
+		while(cond) {
+			try {
+				double amount = scan.nextDouble();
+				if(amount<0)
+					throw new NegativeValueException();
+				return amount;
+			}catch(InputMismatchException e) {
+				System.out.println(ColorsUtility.RED+"Please Enter a number!"+ColorsUtility.CYAN);
+				scan.next();
+			} catch (NegativeValueException e) {
+				System.out.println(ColorsUtility.RED+e.getMessage()+ColorsUtility.CYAN);;
+			}
+		}			
+		return 0;
+	}
+
 	public static int getValidIntResponse(int range, Scanner scan) {
 		boolean cond = true;
 		int optionHolder = -1;
-		System.out.println("Enter the option you would like to use by number.");
+		System.out.println(ColorsUtility.YELLOW+"Enter the option you would like to use by number."+ColorsUtility.GREEN);
 		while (cond) {
 			try {
 				optionHolder = scan.nextInt();
 				if (optionHolder < 1 || optionHolder > range)
-					System.out.println("You must select a number between 1 and " + range + "!");
+					System.out.println(ColorsUtility.RED+"You must select a number between 1 and " + range + "!"+ColorsUtility.GREEN);
 				else
 					cond = false;
 			} catch (InputMismatchException e) {
-				System.out.println("Please enter a number!");
+				System.out.println(ColorsUtility.RED+"Please enter a number!"+ColorsUtility.GREEN);
 				scan.next();
 			}
 		}
@@ -237,7 +258,7 @@ public class DollarsBankController {
 			Matcher matcher = pattern.matcher(password);
 			if (matcher.find())
 				return password;
-			System.out.println("Bad Password try again!");
+			System.out.println(ColorsUtility.RED+"Bad Password try again!"+ColorsUtility.CYAN);
 		}
 		return null;
 	}
