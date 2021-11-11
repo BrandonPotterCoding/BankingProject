@@ -1,5 +1,6 @@
 package com.dollarsbank.model;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 public class Account {
@@ -11,6 +12,10 @@ public class Account {
 		super();
 		this.balance = balance;
 		this.recentActions = recentActions;
+	}
+	public Account() {
+		balance = 0.0;
+		recentActions = new LinkedList<Transaction>();
 	}
 	public double getBalance() {
 		return balance;
