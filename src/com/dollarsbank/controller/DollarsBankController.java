@@ -252,7 +252,7 @@ public class DollarsBankController {
 
 	private String getValidPassword(Scanner scan) {
 		boolean goodPW = false;
-		Pattern pattern = Pattern.compile("^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$");
+		Pattern pattern = Pattern.compile("^(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*[()*;'+@#$%^&+=-]).*$");
 		while (!goodPW) {
 			String password = scan.nextLine();
 			Matcher matcher = pattern.matcher(password);
