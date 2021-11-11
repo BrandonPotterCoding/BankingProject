@@ -8,7 +8,9 @@ public class Customer {
 	private String login;
 	private String password;
 	private Account account;
-	
+	public Customer() {
+		this("", "", "", "", "", null);
+	}
 	public Customer(String name, String address, String number, String login, String password, Account account) {
 		super();
 		this.name = name;
